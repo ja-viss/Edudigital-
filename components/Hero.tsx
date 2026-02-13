@@ -29,12 +29,12 @@ export const Hero: React.FC<HeroProps> = ({ onStart }) => {
            </span>
         </div>
         
-        <h1 className="text-4xl sm:text-6xl md:text-9xl font-brand text-slate-900 mb-6 md:mb-8 leading-[1.1] md:leading-[0.95] tracking-tight">
+        <h1 className="text-3xl sm:text-5xl md:text-7xl font-brand text-slate-900 mb-6 md:mb-8 leading-[1.1] md:leading-[0.95] tracking-tight">
           Educación que <br/>
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-sky-600 to-blue-400">Transforma</span>
         </h1>
         
-        <p className="text-slate-500 text-base md:text-2xl mb-8 md:mb-12 max-w-3xl mx-auto font-light leading-relaxed px-2">
+        <p className="text-slate-500 text-base md:text-xl mb-8 md:mb-12 max-w-3xl mx-auto font-light leading-relaxed px-2">
           Plataforma inmersiva diseñada para el empoderamiento de <span className="text-sky-600 font-semibold italic">Triunfadores</span> y <span className="text-sky-600 font-semibold italic">Docentes</span>. Conocimiento libre para todos.
         </p>
         

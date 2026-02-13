@@ -70,7 +70,7 @@ export interface ArchiveItem {
   title: string;
   description: string;
   thumbnail: string;
-  type: 'software' | 'audio' | 'image' | 'informatica';
+  type: 'software' | 'audio' | 'image' | 'informatica'| 'juegos';
   iaId: string;
 }
 
