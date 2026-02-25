@@ -9,6 +9,7 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ activeSection, setSection }) => {
   const [scrolled, setScrolled] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -27,14 +28,19 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection, setSection }) => 
     { id: Section.IA, label: 'IA' },
   ];
 
+  const handleNavClick = (section: Section) => {
+    setSection(section);
+    setIsMenuOpen(false);
+  };
+
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-      scrolled ? 'glass-nav py-3 px-6' : 'bg-transparent py-6 px-8'
+      scrolled || isMenuOpen ? 'glass-nav py-3 px-6' : 'bg-transparent py-6 px-8'
     }`}>
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <div 
           className="flex items-center gap-3 cursor-pointer group"
-          onClick={() => setSection(Section.Home)}
+          onClick={() => handleNavClick(Section.Home)}
         >
           <div className="w-10 h-10 bg-sky-600 rounded-xl flex items-center justify-center shadow-lg shadow-sky-200 group-hover:rotate-12 transition-transform">
             <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -44,12 +50,13 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection, setSection }) => 
           <span className="hidden sm:block text-slate-900 font-brand font-black text-sm uppercase tracking-widest group-hover:text-sky-600 transition-colors">EduDigital</span>
         </div>
 
-        <ul className="flex bg-white/40 backdrop-blur-xl rounded-2xl p-1 gap-1 border border-white/20 shadow-sm overflow-x-auto max-w-[50%] md:max-w-none no-scrollbar">
+        {/* Desktop Menu */}
+        <ul className="hidden lg:flex bg-white/40 backdrop-blur-xl rounded-2xl p-1 gap-1 border border-white/20 shadow-sm">
           {navItems.map((item) => (
             <li key={item.id}>
               <button
-                onClick={() => setSection(item.id)}
-                className={`px-3 md:px-4 py-2 text-[10px] md:text-sm font-bold rounded-xl transition-all whitespace-nowrap ${
+                onClick={() => handleNavClick(item.id)}
+                className={`px-4 py-2 text-sm font-bold rounded-xl transition-all whitespace-nowrap ${
                   activeSection === item.id 
                   ? 'bg-white text-sky-600 shadow-md scale-105' 
                   : 'text-slate-600 hover:text-slate-900 hover:bg-white/30'
@@ -61,11 +68,44 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection, setSection }) => 
           ))}
         </ul>
 
+        {/* Mobile Menu Button (Hamburger) */}
+        <div className="lg:hidden">
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="text-slate-800 p-2 rounded-md hover:bg-white/50 focus:outline-none"
+            aria-label="Toggle menu"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={isMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16m-7 6h7"} />
+            </svg>
+          </button>
+        </div>
+        
         <div className="hidden lg:block">
           <button className="px-6 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-black uppercase tracking-widest rounded-xl shadow-lg transition-all hover:scale-105 active:scale-95">
             Acceso
           </button>
         </div>
+      </div>
+      
+      {/* Mobile Menu Panel */}
+      <div className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${isMenuOpen ? 'max-h-96 pt-4' : 'max-h-0'}`}>
+        <ul className="flex flex-col items-center gap-1">
+          {navItems.map((item) => (
+            <li key={item.id} className="w-full">
+              <button
+                onClick={() => handleNavClick(item.id)}
+                className={`w-full text-center px-4 py-3 rounded-lg font-bold transition-all ${
+                  activeSection === item.id 
+                  ? 'bg-white text-sky-600 shadow-md' 
+                  : 'text-slate-700 hover:bg-white/50'
+                }`}
+              >
+                {item.label}
+              </button>
+            </li>
+          ))}
+        </ul>
       </div>
     </nav>
   );

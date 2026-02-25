@@ -1,7 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
 import { Video, ManagementPayload } from '../types';
-import { fetchVenezuelanVideos } from '../services/youtubeService';
 
 interface HistoryProps {
   userHistory: ManagementPayload[];
@@ -15,8 +13,17 @@ export const HistorySection: React.FC<HistoryProps> = ({ userHistory }) => {
   useEffect(() => {
     const loadHistory = async () => {
       setLoading(true);
-      const historyVideos = await fetchVenezuelanVideos('documental historia de venezuela bolívar', 12);
-      setVideos(historyVideos);
+      try {
+        const response = await fetch('/data-youtube.json');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data: Video[] = await response.json();
+        const historyVideos = data.filter(video => video.category === 'Historia');
+        setVideos(historyVideos);
+      } catch (error) {
+        console.error("Error loading video data:", error);
+      }
       setLoading(false);
     };
     loadHistory();
@@ -50,14 +57,22 @@ export const HistorySection: React.FC<HistoryProps> = ({ userHistory }) => {
         )}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 reveal active">
-          {videos.map((video) => (
-            <div key={video.id} className="group cursor-pointer bg-slate-50 p-4 rounded-[2.5rem] border border-slate-100 hover:bg-white transition-all shadow-sm hover:shadow-xl" onClick={() => setSelectedVideo({ id: video.id, title: video.title })}>
-              <div className="aspect-video rounded-3xl overflow-hidden mb-4">
-                <img src={video.thumbnail} alt={video.title} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" />
+          {loading ? (
+             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+               {[1,2,3,4,5,6,7,8].map(i => (
+                 <div key={i} className="aspect-video bg-slate-100 rounded-[2rem] animate-pulse"></div>
+               ))}
+             </div>
+          ) : (
+            videos.map((video) => (
+              <div key={video.id} className="group cursor-pointer bg-slate-50 p-4 rounded-[2.5rem] border border-slate-100 hover:bg-white transition-all shadow-sm hover:shadow-xl" onClick={() => setSelectedVideo({ id: video.id, title: video.title })}>
+                <div className="aspect-video rounded-3xl overflow-hidden mb-4">
+                  <img src={video.thumbnail} alt={video.title} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" />
+                </div>
+                <h3 className="font-bold text-slate-800 line-clamp-2 text-sm">{video.title}</h3>
               </div>
-              <h3 className="font-bold text-slate-800 line-clamp-2 text-sm">{video.title}</h3>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
 

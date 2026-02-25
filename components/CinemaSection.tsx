@@ -1,42 +1,49 @@
 import React, { useState, useEffect } from 'react';
 import { Video, ManagementPayload } from '../types';
-import { fetchVenezuelanVideos } from '../services/youtubeService';
 
 interface CinemaProps {
   userMovies: ManagementPayload[];
 }
 
 export const CinemaSection: React.FC<CinemaProps> = ({ userMovies }) => {
-  const [videos, setVideos] = useState<Video[]>([]);
+  const [allVideos, setAllVideos] = useState<Video[]>([]);
+  const [filteredVideos, setFilteredVideos] = useState<Video[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedVideo, setSelectedVideo] = useState<any>(null);
-  
-  // Estado para la categoría activa
-  const [activeCategory, setActiveCategory] = useState('cine');
+  const [activeSubCategory, setActiveSubCategory] = useState('Cine Nacional');
 
-  // Definición de las categorías y sus consultas de búsqueda optimizadas
-  const categories = [
-    { id: 'cine', label: 'Cine Nacional', query: 'cine venezolano peliculas completas documentales historia' },
-    { id: 'leyendas', label: 'Leyendas y Mitos', query: 'leyendas venezolanas el silbon la sayona cuentos de camino' },
-    { id: 'paisajes', label: 'Paisajes de Venezuela', query: 'paisajes venezuela gran sabana merida roques drone 4k' },
-    { id: 'fauna', label: 'Fauna Nacional', query: 'animales de venezuela fauna silvestre documentales' },
+  const subCategories = [
+    { id: 'Cine Nacional', label: 'Cine Nacional' },
+    { id: 'Leyendas y Mitos', label: 'Leyendas y Mitos' },
+    { id: 'Paisajes de Venezuela', label: 'Paisajes de Venezuela' },
+    { id: 'Fauna Nacional', label: 'Fauna Nacional' },
   ];
 
   useEffect(() => {
-    const loadCinema = async () => {
+    const loadVideos = async () => {
       setLoading(true);
-      
-      // Buscamos la query correspondiente a la categoría activa
-      const currentCategory = categories.find(c => c.id === activeCategory);
-      const queryBase = currentCategory ? currentCategory.query : 'documental venezuela';
-
-      // isMovie = true fuerza videos largos/documentales
-      const results = await fetchVenezuelanVideos(queryBase, 24, true);
-      setVideos(results);
+      try {
+        const response = await fetch('/data-youtube.json');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data: Video[] = await response.json();
+        const cinemaVideos = data.filter(video => video.category === 'Cine');
+        setAllVideos(cinemaVideos);
+      } catch (error) {
+        console.error("Error loading video data:", error);
+      }
       setLoading(false);
     };
-    loadCinema();
-  }, [activeCategory]);
+    loadVideos();
+  }, []);
+
+  useEffect(() => {
+    if (allVideos.length > 0) {
+      const videos = allVideos.filter(video => video.subcategory === activeSubCategory);
+      setFilteredVideos(videos);
+    }
+  }, [activeSubCategory, allVideos]);
 
   return (
     <section className="bg-white text-slate-900 min-h-screen font-sans">
@@ -61,12 +68,12 @@ export const CinemaSection: React.FC<CinemaProps> = ({ userMovies }) => {
         
         {/* MENÚ DE CATEGORÍAS (NUEVO) */}
         <div className="flex flex-wrap gap-4 mb-16 justify-center md:justify-start border-b border-slate-100 pb-8">
-          {categories.map((cat) => (
+          {subCategories.map((cat) => (
             <button
               key={cat.id}
-              onClick={() => setActiveCategory(cat.id)}
+              onClick={() => setActiveSubCategory(cat.id)}
               className={`px-8 py-3 rounded-full text-xs font-black uppercase tracking-widest transition-all duration-300 transform hover:-translate-y-1 ${
-                activeCategory === cat.id
+                activeSubCategory === cat.id
                   ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-200 ring-2 ring-emerald-600 ring-offset-2'
                   : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
               }`}
@@ -77,7 +84,7 @@ export const CinemaSection: React.FC<CinemaProps> = ({ userMovies }) => {
         </div>
 
         {/* Sección de Estrenos del Inventario Propio (DB.JSON) */}
-        {userMovies.length > 0 && activeCategory === 'cine' && (
+        {userMovies.length > 0 && activeSubCategory === 'Cine Nacional' && (
           <div className="mb-24 animate-in fade-in slide-in-from-bottom-4 duration-700">
              <h3 className="text-xl font-black uppercase tracking-widest text-emerald-800 mb-8 flex items-center gap-3">
                <span className="w-8 h-1 bg-emerald-500 rounded-full"></span> Estrenos del Inventario
@@ -110,10 +117,10 @@ export const CinemaSection: React.FC<CinemaProps> = ({ userMovies }) => {
           ) : (
             <>
               <h3 className="text-xl font-black uppercase tracking-widest text-slate-400 mb-8 flex items-center gap-3">
-                 <span className="w-2 h-2 bg-slate-300 rounded-full"></span> Explorando: <span className="text-emerald-600">{categories.find(c => c.id === activeCategory)?.label}</span>
+                 <span className="w-2 h-2 bg-slate-300 rounded-full"></span> Explorando: <span className="text-emerald-600">{subCategories.find(c => c.id === activeSubCategory)?.label}</span>
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                {videos.map((video) => (
+                {filteredVideos.map((video) => (
                   <div key={video.id} className="group cursor-pointer" onClick={() => setSelectedVideo({ id: video.id, title: video.title })}>
                     <div className="aspect-video rounded-[2rem] overflow-hidden bg-slate-100 shadow-sm group-hover:shadow-xl transition-all duration-300 relative">
                       <img src={video.thumbnail} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt={video.title} />

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Section, ManagementPayload } from './types';
 import { Navbar } from './components/Navbar';
@@ -13,6 +12,9 @@ import { ArchivosSection } from './components/ArchivosSection';
 import { IAServiceSection } from './components/IAServiceSection';
 import { NewsSection } from './components/NewsSection';
 import { ManagementSection } from './components/ManagementSection';
+import { TeamSection } from './components/TeamSection';
+import { MisionSucreSection } from './components/MisionSucreSection';
+import { ContributionsSection } from './components/ContributionsSection';
 
 const App: React.FC = () => {
   const [activeSection, setActiveSection] = useState<Section>(Section.Home);
@@ -70,6 +72,9 @@ const App: React.FC = () => {
             <Hero onStart={setActiveSection} />
             <AboutSection />
             <PartnersSection />
+            <MisionSucreSection />
+            <TeamSection />
+            <ContributionsSection />
           </>
         );
       case Section.Library: return <LibrarySection userBooks={inventario.filter(i => i.modulo === 'Libros')} />;

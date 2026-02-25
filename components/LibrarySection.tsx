@@ -23,45 +23,45 @@ export const LibrarySection: React.FC<LibraryProps> = ({ userBooks }) => {
   };
 
   return (
-    <section className="py-32 px-6 bg-white min-h-screen">
+    <section className="py-24 md:py-32 px-6 bg-white min-h-screen pt-40">
       <div className="max-w-7xl mx-auto">
-        <div className="mb-16 text-center">
+        <div className="mb-12 md:mb-16 text-center">
           <h2 className="text-5xl md:text-7xl font-brand text-slate-900 tracking-tighter">Saber <span className="text-sky-600 italic">Libre</span></h2>
-          <p className="text-slate-500 mt-4 max-w-2xl mx-auto text-xl font-light">Explora el inventario maestro de textos académicos e históricos.</p>
+          <p className="text-slate-500 mt-4 max-w-2xl mx-auto text-lg md:text-xl font-light">Explora el inventario maestro de textos académicos e históricos.</p>
         </div>
 
         {userBooks.length > 0 && (
-          <div className="mb-24">
-             <h3 className="text-xl font-black uppercase tracking-widest text-sky-600 mb-8 flex items-center gap-3">
+          <div className="mb-16 md:mb-24">
+             <h3 className="text-lg md:text-xl font-black uppercase tracking-widest text-sky-600 mb-6 md:mb-8 flex items-center gap-3">
                <span className="w-8 h-px bg-sky-600"></span> Colección Especial
              </h3>
-             <div className="grid grid-cols-2 md:grid-cols-6 gap-6">
+             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 md:gap-6">
                 {userBooks.map((item) => (
                   <div key={item.payload.id} className="group cursor-pointer" onClick={() => setSelectedBookUrl(item.payload.recursos.enlaces[0])}>
-                    <div className="aspect-[3/4] rounded-2xl overflow-hidden shadow-lg group-hover:-translate-y-2 transition-all">
+                    <div className="aspect-[3/4] rounded-lg md:rounded-2xl overflow-hidden shadow-lg group-hover:-translate-y-2 transition-all">
                       <img src={item.payload.recursos.url_portada} className="w-full h-full object-cover" alt={item.payload.metadata.titulo} />
                     </div>
-                    <h4 className="mt-3 text-xs font-bold text-slate-800 line-clamp-2">{item.payload.metadata.titulo}</h4>
+                    <h4 className="mt-2 md:mt-3 text-xs font-bold text-slate-800 line-clamp-2">{item.payload.metadata.titulo}</h4>
                   </div>
                 ))}
              </div>
           </div>
         )}
 
-        <form onSubmit={handleSearch} className="max-w-3xl mx-auto mb-20">
-          <div className="flex gap-2 p-2 bg-slate-50 rounded-3xl border border-slate-200 shadow-sm focus-within:shadow-xl transition-all">
-            <input type="text" placeholder="Buscar en OpenLibrary..." className="flex-1 bg-transparent px-6 py-3 outline-none font-medium" value={query} onChange={(e) => setQuery(e.target.value)}/>
-            <button type="submit" className="bg-sky-600 text-white px-10 py-3 rounded-2xl font-bold transition-all shadow-lg" disabled={loading}>Buscar</button>
+        <form onSubmit={handleSearch} className="max-w-3xl mx-auto mb-12 md:mb-20">
+          <div className="flex flex-col sm:flex-row gap-2 p-2 bg-slate-50 rounded-2xl md:rounded-3xl border border-slate-200 shadow-sm focus-within:shadow-xl transition-all">
+            <input type="text" placeholder="Buscar en OpenLibrary..." className="flex-1 bg-transparent px-4 py-3 md:px-6 md:py-3 outline-none font-medium" value={query} onChange={(e) => setQuery(e.target.value)}/>
+            <button type="submit" className="bg-sky-600 text-white px-6 py-3 md:px-10 md:py-3 rounded-xl md:rounded-2xl font-bold transition-all shadow-lg text-sm" disabled={loading}>Buscar</button>
           </div>
         </form>
 
-        <div className="grid grid-cols-2 md:grid-cols-6 gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 md:gap-8">
           {books.map((book) => (
             <div key={book.key} className="group cursor-pointer" onClick={() => setSelectedBookUrl(`https://archive.org/embed/${book.ia![0]}?ui=full&view=theater`)}>
-              <div className="aspect-[3/4] rounded-2xl overflow-hidden shadow-sm group-hover:shadow-xl transition-all">
+              <div className="aspect-[3/4] rounded-lg md:rounded-2xl overflow-hidden shadow-sm group-hover:shadow-xl transition-all">
                 <img src={getBookCoverUrl(book.cover_i)} alt={book.title} className="w-full h-full object-cover" />
               </div>
-              <h3 className="mt-3 text-xs font-bold text-slate-800 line-clamp-2">{book.title}</h3>
+              <h3 className="mt-2 md:mt-3 text-xs font-bold text-slate-800 line-clamp-2">{book.title}</h3>
             </div>
           ))}
         </div>

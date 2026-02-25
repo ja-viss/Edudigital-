@@ -23,6 +23,7 @@ export interface Video {
   url: string;
   duration?: string;
   category: string;
+  subcategory: string; 
 }
 
 export interface Course {
