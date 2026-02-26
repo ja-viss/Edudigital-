@@ -29,7 +29,7 @@ const teamMembers = [
   {
     name: 'Glenda Yarely Parada',
     role: 'Docente Asesor',
-    contribution: 'Encargada de recibir y orientar a los nuevos triunfadores.',
+    contribution: 'Especialista en atención al estudiante, dedicada a brindar orientación integral y apoyo administrativo en la ruta académica de los nuevos ingresos.',
     imageUrl: '/img/glenda.jpg'
   },
   {
@@ -41,14 +41,14 @@ const teamMembers = [
   {
     name: 'Vladimir Altuve',
     role: 'Docente colaborador',
-    contribution: 'Experto en llo profesional y personal de los estudiantes.',
+    contribution: 'Facilitador especializado en infraestructura de redes, dedicado a la transferencia de conocimientos técnicos y al fortalecimiento de las competencias digitales de los estudiantes.',
     imageUrl: '/img/vladimir.jpg'
   },
   {
-    name: 'Placeholder Name',
-    role: 'Placeholder Role',
-    contribution: 'Placeholder contribution.',
-    imageUrl: '/img/placeholder.jpg'
+    name: 'Sydney Montoya',
+    role: 'Coordinador de la Mision Sucre Estado',
+    contribution: 'Impulsor de la municipalización educativa, coordinando esfuerzos para fortalecer el despliegue de las aldeas universitarias en cada rincón del estado.',
+    imageUrl: '/img/sydney.png'
   }
 ];
 

@@ -15,6 +15,7 @@ import { ManagementSection } from './components/ManagementSection';
 import { TeamSection } from './components/TeamSection';
 import { MisionSucreSection } from './components/MisionSucreSection';
 import { ContributionsSection } from './components/ContributionsSection';
+import { DevelopersSection } from './components/DevelopersSection';
 
 const App: React.FC = () => {
   const [activeSection, setActiveSection] = useState<Section>(Section.Home);
@@ -84,6 +85,7 @@ const App: React.FC = () => {
       case Section.Archivos: return <ArchivosSection />;
       case Section.IA: return <IAServiceSection />;
       case Section.News: return <NewsSection />;
+      case Section.Developers: return <DevelopersSection />;
       case Section.Management: return isAuthenticated ? (
         <ManagementSection inventario={inventario} setInventario={setInventario} />
       ) : (

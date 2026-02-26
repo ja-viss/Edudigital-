@@ -1,4 +1,3 @@
-
 export interface Book {
   id?: string | number;
   key: string;
@@ -11,7 +10,7 @@ export interface Book {
   language?: string[];
   ia_id?: string;
   gutenberg_url?: string;
-  source?: 'Gutenberg' | 'Archive.org';
+  source: 'Gutenberg' | 'Archive.org';
 }
 
 export interface Video {
@@ -23,7 +22,7 @@ export interface Video {
   url: string;
   duration?: string;
   category: string;
-  subcategory: string; 
+  subcategory: string;
 }
 
 export interface Course {
@@ -94,5 +93,6 @@ export enum Section {
   Archivos = 'archivos',
   IA = 'ia',
   News = 'news',
-  Management = 'management'
+  Management = 'management',
+  Developers = 'developers',
 }

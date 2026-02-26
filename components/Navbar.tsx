@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Section } from '../types';
 
@@ -26,6 +25,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection, setSection }) => 
     { id: Section.Archivos, label: 'Archivos' },
     { id: Section.News, label: 'Noticias' },
     { id: Section.IA, label: 'IA' },
+    { id: Section.Developers, label: 'Desarrolladores' },
   ];
 
   const handleNavClick = (section: Section) => {
