@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: mision-sucre-sistema-inmersivo
+    env: static
+    # Framework / Language: React/Vite
+    buildCommand: "npm install && npm run build"
+    # Directorio de publicación: 'dist' para proyectos Vite
+    staticPublishPath: dist
+    # Opcional: Configuración de reescrituras para soportar el enrutamiento de React
+    # Esto asegura que las rutas como /about o /contact funcionen correctamente
+    # al recargar la página.
+    routes:
+      - type: rewrite
+        source: "/*"
+        destination: "/index.html"
