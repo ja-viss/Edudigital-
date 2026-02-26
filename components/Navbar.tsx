@@ -89,7 +89,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection, setSection }) => 
       </div>
       
       {/* Mobile Menu Panel */}
-      <div className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${isMenuOpen ? 'max-h-96 pt-4' : 'max-h-0'}`}>
+      <div className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${isMenuOpen ? 'max-h-screen pt-4' : 'max-h-0'}`}>
         <ul className="flex flex-col items-center gap-1">
           {navItems.map((item) => (
             <li key={item.id} className="w-full">
@@ -105,6 +105,12 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection, setSection }) => 
               </button>
             </li>
           ))}
+           {/* Added Access Button for Mobile Menu */}
+           <li className="w-full pt-2">
+            <button className="w-full px-6 py-3 bg-slate-900 hover:bg-slate-800 text-white text-sm font-black uppercase tracking-widest rounded-xl shadow-lg transition-all">
+              Acceso
+            </button>
+          </li>
         </ul>
       </div>
     </nav>
